@@ -1,103 +1,275 @@
-import Image from "next/image";
+'use client';
+
+import {
+  Document,
+  Page,
+  PDFViewer,
+  PDFDownloadLink,
+  Text,
+  View,
+  Link,
+  StyleSheet
+} from '@react-pdf/renderer';
+import { personal, projects, jobListings, educationList, links, everything } from '../data/exp';
+
+const styles = StyleSheet.create({
+  header: {
+    textAlign: 'left',
+    marginBottom: 18,
+    textTransform: 'uppercase',
+  },
+  stats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 4,
+    marginBottom: 12,
+  },
+  stat: {
+    fontSize: 12,
+    fontWeight: 'normal',
+  },
+  descriptionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    textAlign: 'left',
+    fontSize: 12,
+    fontWeight: 'normal',
+    marginTop: 12,
+  },
+  description: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4
+  },
+  sectionContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 20,
+  },
+  project: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  leftSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+    fontSize: 12,
+    fontWeight: 'normal',
+    width: '40%',
+    paddingRight: 16,
+  },
+  rightSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+    fontSize: 12,
+    fontWeight: 'normal',
+    width: '60%',
+  },
+  achieved: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginTop: 6,
+  },
+  tools: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 4,
+    marginTop: 6,
+  },
+  tool: {
+    padding: 6,
+    borderRadius: 6,
+    width: 'auto',
+    backgroundColor: 'white',
+    color: 'black',
+    border: '1px solid gray',
+    fontSize: 10,
+    textAlign: 'center'
+  }
+});
+
+function HeaderSection({ title }: { title: string }) {
+  return (
+    <View style={{ display: 'flex', flexDirection: 'row', justifySelf: 'start', margin: '12 0 6 -20' }}>
+      <View style={{ backgroundColor: 'green', width: 16, height: 4, marginRight: 4, marginTop: 8 }} />
+      <Text style={styles.header}>{title}</Text>
+    </View>
+  )
+}
+
+function Introduction() {
+  return (
+    <View>
+      <HeaderSection title={personal[0].name} />
+      <View style={styles.stats}>
+        <Text style={styles.stat}>{personal[0].skill}</Text>
+        <Link style={[styles.stat, { color: 'black' }]} href={`mailto:${personal[0].email}`}>{personal[0].email}</Link>
+        <Text style={styles.stat}>{personal[0].location}</Text>
+      </View>
+      <View style={styles.stats}>
+        <View style={styles.descriptionContainer}>
+          <View style={[styles.description, { width: '30%' }]}>
+            {links.map((link, index) => (
+              <Link key={index} href={link.link} style={{ color: 'black' }}>{link.name}</Link>
+            ))}
+          </View>
+          <View style={[styles.description, { width: '70%', textAlign: 'right' }]}>
+            <Text>{personal[0].goal}</Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function Projects() {
+  return (
+    <View>
+      <HeaderSection title="Projects" />
+      <View style={styles.sectionContainer}>
+        {projects.map((project, index) => (
+          <View key={index} style={styles.project}>
+            <View style={styles.leftSection}>
+              <Text>
+                {project.goal}
+              </Text>
+              {project.link !== '#' ? <Link href={project.link} style={{ fontSize: 10, color: '#00000099' }}>
+                {project.name}
+              </Link> : <Text style={{ fontSize: 10, color: '#00000099' }}>
+                {project.name}
+              </Text>}
+              <Text style={{ fontSize: 10, color: '#00000099' }}>
+                {project.status} on {project.date}
+              </Text>
+            </View>
+            <View style={styles.rightSection}>
+              <Text>
+                {project.lesson}
+              </Text>
+              <View style={styles.achieved}>
+                {project.achieved.map((achieved, index) => (
+                  <Text style={{ fontSize: 10, color: '#00000099' }} key={index}>
+                    - {achieved}
+                  </Text>
+                ))}
+              </View>
+              <View style={styles.tools}>
+                {project.tools.map((tool, index) => (
+                  <Text style={styles.tool} key={index}>
+                    {tool}
+                  </Text>
+                ))}
+              </View>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function JobHistory() {
+  return (
+    <View>
+      <HeaderSection title="Work Experience" />
+      <View style={styles.sectionContainer}>
+        {jobListings.map((job, index) => (
+          <View key={index} style={styles.project}>
+            <View style={styles.leftSection}>
+              <Text style={{ fontWeight: 'bold' }}>
+                {job.position}
+              </Text>
+              <Text style={{ fontSize: 10 }}>
+                {job.business}
+              </Text>
+              <Text style={{ fontSize: 10 }}>
+                {job.dateFrom} - {job.dateTo}
+              </Text>
+            </View>
+            <View style={styles.rightSection}>
+              <Text style={{ fontSize: 10, color: '#00000099' }}>
+                {job.description}
+              </Text>
+              <View style={styles.tools}>
+                {job.skills.map((skill, index) => (
+                  <Text style={styles.tool} key={index}>
+                    {skill}
+                  </Text>
+                ))}
+              </View>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function Education() {
+  return (
+    <View style={{ marginTop: 24 }}>
+      <HeaderSection title="Education" />
+      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        {educationList.map((education, index) => (
+          <View key={index} style={{ width: '40%' }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 12 }}>
+              {education.school}
+            </Text>
+            <Text style={{ fontSize: 10 }}>
+              {education.degree}
+            </Text>
+            <Text style={{ fontSize: 10 }}>
+              {education.yearFrom} - {education.yearTo}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function Skills() {
+  return (
+    <View style={{ marginTop: 24 }}>
+      <HeaderSection title="Skills" />
+      <View style={styles.tools}>
+        {everything.map((x, index) => (
+          <Text style={styles.tool} key={index}>
+            {x}
+          </Text>
+        ))}
+      </View>
+    </View>
+  );
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const doc = (
+    <Document>
+      <Page style={{ padding: 20 }}>
+        <Introduction />
+        <Projects />
+        <JobHistory />
+        <Education />
+        <Skills />
+      </Page>
+    </Document>
+  );
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div>
+      <PDFViewer className="w-full h-svh">{doc}</PDFViewer>
+      <PDFDownloadLink document={doc}>
+        <div className="flex justify-center items-center h-32">
+          Download
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </PDFDownloadLink>
     </div>
   );
 }
