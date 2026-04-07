@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import {
   Document,
   Page,
@@ -60,7 +61,7 @@ function LetterTo({ name }: { name?: string }) {
   );
 }
 
-export default function Home() {
+function CoverLetterPageContent() {
   const doc = (
     <Document>
       <Page style={{ padding: 40 }}>
@@ -100,3 +101,9 @@ export default function Home() {
     </div>
   );
 }
+
+const Home = dynamic(async () => CoverLetterPageContent, {
+  ssr: false,
+});
+
+export default Home;
