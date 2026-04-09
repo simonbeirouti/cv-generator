@@ -30,7 +30,7 @@ export const experience = [
     company: "WebPres",
     title: "Founder",
     date: "May 2023 - Present",
-    location: "Melbourne, Australia",
+    location: "Melbourne, Australia | Remote",
     bullets: [
       "Led end-to-end website delivery for client projects, from scoping and planning through launch and iteration.",
       "Managed client relationships to align final products with brand direction, commercial goals, and content strategy.",
@@ -85,6 +85,31 @@ export const experience = [
       "Helped clients better understand trading systems and platform behavior through hands-on support and guided problem solving.",
       "Contributed product feedback and improvement ideas based on recurring customer issues and technical observations.",
       "Took part in performance reviews and strategic planning conversations that linked customer needs with product direction.",
+    ],
+  },
+  {
+    company: "Crypto.com",
+    title: "AUS & NZ Community Manager",
+    date: "May 2020 - November 2020",
+    location: "Melourne, Australia | Remote",
+    bullets: [
+      "Coordinated financial product launch campaigns in Australia, aligning execution with strategic goals.",
+      "Collaborated with cross-functional teams to deliver consistent brand messaging while following brand guidelines and launch protocols.",
+      "Used Telegram bots to analyze user interactions and help optimize campaign performance.",
+      "Converted campaign data and community feedback into insights that informed strategic decisions.",
+      "Helped shape marketing messages by analyzing audience reception and supporting compliance requirements.",
+    ],
+  },
+  {
+    company: "Parsl",
+    title: "Community Manager & Support Advisor",
+    date: "March 2017 - September 2018",
+    location: "Melbourne, Australia",
+    bullets: [
+      "Served as Community Manager, leading engagement and communication with users and stakeholders.",
+      "Acted as Support Advisor, handling incoming customer requests and providing assistance across channels.",
+      "Facilitated partnerships by connecting with other protocols on the EOS blockchain.",
+      "Helped build and maintain relationships that supported Parsl's ecosystem growth.",
     ],
   },
 ];

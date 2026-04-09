@@ -125,6 +125,9 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#1F2937',
   },
+  additionalExp: {
+    marginBottom: 14
+  },
   inlineList: {
     fontSize: 10,
     color: '#1F2937',
@@ -208,6 +211,12 @@ function ResumeDocument() {
           ))}
         </Section>
 
+        <Section title="Additional Experience">
+          <View style={styles.additionalExp}>
+            <BulletList items={additionalExperience} />
+          </View>
+        </Section>
+
         <Section title="Education">
           {education.map((item) => (
             <View key={`${item.school}-${item.qualification}`}>
@@ -223,10 +232,6 @@ function ResumeDocument() {
               </View>
             </View>
           ))}
-        </Section>
-
-        <Section title="Additional Experience">
-          <BulletList items={additionalExperience} />
         </Section>
 
         {skillGroups.map((group) => (
