@@ -12,6 +12,9 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { DocumentPageShell } from '@/components/document-page-shell';
+import { WordCounter } from '@/components/word-counter';
+import { countWords } from '@/lib/word-count';
 import {
   additionalExperience,
   education,
@@ -250,20 +253,54 @@ function ResumeDocument() {
 
 function CvPageContent() {
   const doc = <ResumeDocument />;
+  const wordCount = countWords([
+    personal.name,
+    personal.title,
+    personal.location,
+    personal.phone,
+    personal.email,
+    personal.summary,
+    'Professional Experience',
+    'Additional Experience',
+    'Education',
+    'Interests',
+    ...links.flatMap((link) => [link.label, link.value]),
+    ...experience.flatMap((role) => [
+      role.title,
+      role.company,
+      role.location,
+      role.date,
+      ...role.bullets,
+    ]),
+    ...additionalExperience,
+    ...education.flatMap((item) => [
+      item.school,
+      item.qualification,
+      item.detail,
+      item.date,
+    ]),
+    ...skillGroups.flatMap((group) => [group.name, ...group.items]),
+    ...interests,
+  ]);
 
   return (
-    <main className="min-h-screen bg-stone-100">
-      <PDFViewer className="h-[calc(100vh-88px)] w-full">{doc}</PDFViewer>
-      <PDFDownloadLink document={doc} fileName="simon-beirouti-resume.pdf">
-        {({ loading }) => (
-          <div className="flex items-center justify-center border-t border-stone-300 bg-white p-4">
-            <span className="rounded-md border border-stone-900 px-4 py-2 text-sm font-medium text-stone-900">
+    <DocumentPageShell
+      eyebrow="Resume"
+      title="Curriculum vitae preview and PDF export"
+      description="Review the current resume in the same document shell used by the ADS page, then download the generated PDF."
+      meta={<WordCounter count={wordCount} />}
+      actions={
+        <PDFDownloadLink document={doc} fileName="simon-beirouti-resume.pdf">
+          {({ loading }) => (
+            <span className="inline-flex rounded-full bg-slate-950 px-5 py-2 text-sm font-medium text-white">
               {loading ? 'Preparing PDF...' : 'Download Resume PDF'}
             </span>
-          </div>
-        )}
-      </PDFDownloadLink>
-    </main>
+          )}
+        </PDFDownloadLink>
+      }
+    >
+      <PDFViewer className="h-[calc(100vh-220px)] min-h-[720px] w-full">{doc}</PDFViewer>
+    </DocumentPageShell>
   );
 }
 
